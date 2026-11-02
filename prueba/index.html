@@ -148,6 +148,32 @@ footer.by2{text-align:center;font-size:12px;color:var(--muted);padding-block:6px
 .rem h3{margin:0;font-size:15px;color:var(--warn)}
 @media print{body *{visibility:hidden!important}#printArea,#printArea *{visibility:visible!important}#printArea{position:fixed;left:0;top:0;width:80mm}}
 footer.by2 b{letter-spacing:.08em;color:var(--fg)}
+/* v3 */
+.srch{display:flex;gap:8px}.srch .in{flex:1}.srch .btn{padding:10px 14px;font-size:20px;line-height:1}
+.res{display:grid;gap:6px}.res:empty{display:none}
+.res button{display:flex;justify-content:space-between;gap:10px;align-items:center;text-align:left;background:var(--accent-soft);border:0;border-radius:10px;padding:10px 12px;font-weight:600}
+.res small{color:var(--muted);font-weight:500}
+.cart{display:grid;gap:8px;background:var(--surface-2);border-radius:12px;padding:8px}
+.ci{display:grid;grid-template-columns:1fr 92px auto;gap:8px;align-items:center;background:var(--surface);border-radius:10px;padding:8px 10px}
+.ci .m{min-width:0}.ci .m b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ci .m span{font-size:13px;color:var(--muted)}
+.ci .pr{padding:8px;font-size:14px;text-align:right}
+.step{display:flex;align-items:center;gap:6px}.step button{width:36px;height:36px;border-radius:10px;border:0;background:var(--accent-soft);color:var(--accent);font-size:20px;font-weight:800}
+.step b{min-width:26px;text-align:center}.step.big .in{text-align:center;font-size:20px;font-weight:700}.step.big button{width:48px;height:48px;flex:none}
+.tot2{display:grid;align-content:end;justify-items:end;background:var(--surface-2);border-radius:12px;padding:8px 12px}.tot2 span{font-size:12px;color:var(--muted);font-weight:600}.tot2 b{font-size:22px}
+details.libre{background:var(--surface-2);border-radius:12px;padding:10px 12px}details.libre summary{font-weight:700;cursor:pointer}details.libre[open]{display:grid;gap:10px}
+.chk{display:flex;gap:10px;align-items:center;font-size:14px;font-weight:600}.chk input{width:20px;height:20px;accent-color:var(--accent)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.chips button{flex:none;border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 12px;font-weight:700;font-size:13px;color:var(--muted)}
+.chips button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
+.rowbtn{width:100%;border:0;border-top:1px solid var(--line);background:transparent;text-align:left}
+.list .rowbtn:first-child{border-top:0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.grid3 .btn{padding:12px 6px}
+.pedido{max-height:46vh;overflow:auto}.pedido .q{width:84px;flex:none;text-align:center;padding:10px}
+.prof{display:inline-block;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:1px 7px;font-size:12px;font-weight:700}
+.scanov{position:fixed;inset:0;z-index:60;background:#000;display:grid;place-items:center;align-content:center;gap:14px;padding:16px}
+.scanov video{width:100%;max-width:480px;border-radius:14px}.scanov .frame{position:absolute;width:70%;max-width:340px;height:120px;border:3px solid #5BB3C9;border-radius:12px;top:calc(50% - 80px)}
+.scanov p{color:#fff;margin:0;font-weight:600}
+.ticket .em{font-size:11.5px;color:#555}
 </style>
 
 <div id="login" hidden>
@@ -233,7 +259,8 @@ function demoData(){
       modulos:{caja:true,fiado:true,stock:true,turnos:true},limiteFiado:50000,diasReclamar:30,
       categorias:["Ventas","Servicios","Cobro de fiado","Otros ingresos","Mercadería / proveedores","Alquiler","Sueldos","Luz, gas, internet","Impuestos y monotributo","Comisiones y bancos","Mantenimiento","Retiro del dueño","Otros gastos"],
       medios:["Efectivo","Transferencia","Mercado Pago / QR","Débito","Crédito"],
-      servicios:[{nombre:"Corte",precio:12000},{nombre:"Corte + barba",precio:16000},{nombre:"Color",precio:30000}]},
+      servicios:[{nombre:"Corte",precio:12000,minutos:30},{nombre:"Corte + barba",precio:16000,minutos:45},{nombre:"Color",precio:30000,minutos:90}],
+      empleados:["Laura","Martín"], cuit:"20-12345678-9", direccion:"Av. de Mayo 1234, Ramos Mejía", iva:"Monotributista"},
     caja,
     fiadoClientes:[{cliente:"Marta Ruiz",whatsapp:"1134567890",limite:""},{cliente:"Jorge (taller)",whatsapp:"1145678901",limite:50000},{cliente:"Lucía Fernández",whatsapp:"1156789012",limite:""},{cliente:"Don Ramón",whatsapp:"1167890123",limite:""}],
     fiadoMov:[
@@ -246,12 +273,12 @@ function demoData(){
       {fecha:d(-5),cliente:"Lucía Fernández",tipo:"Pago",detalle:"Pago total",monto:18500},
       {fecha:d(-40),cliente:"Don Ramón",tipo:"Fiado",detalle:"Compra del mes",monto:26000}],
     stock:[
-      {codigo:"A001",producto:"Yerba 1 kg",categoria:"Almacén",costo:3900,precio:5200,inicial:20,minimo:8},
-      {codigo:"A002",producto:"Aceite girasol 1,5 L",categoria:"Almacén",costo:2600,precio:3500,inicial:15,minimo:6},
-      {codigo:"B001",producto:"Gaseosa cola 2,25 L",categoria:"Bebidas",costo:2200,precio:3100,inicial:24,minimo:12},
-      {codigo:"L001",producto:"Lavandina 1 L",categoria:"Limpieza",costo:700,precio:1100,inicial:12,minimo:5},
-      {codigo:"C001",producto:"Leche entera 1 L",categoria:"Lácteos",costo:1250,precio:1650,inicial:30,minimo:15},
-      {codigo:"G001",producto:"Alfajor triple",categoria:"Golosinas",costo:650,precio:1000,inicial:40,minimo:10}],
+      {codigo:"7790387000016",producto:"Yerba 1 kg",categoria:"Almacén",costo:3900,precio:5200,inicial:20,minimo:8},
+      {codigo:"7790060023141",producto:"Aceite girasol 1,5 L",categoria:"Almacén",costo:2600,precio:3500,inicial:15,minimo:6},
+      {codigo:"7790895000997",producto:"Gaseosa cola 2,25 L",categoria:"Bebidas",costo:2200,precio:3100,inicial:24,minimo:12},
+      {codigo:"7790520000453",producto:"Lavandina 1 L",categoria:"Limpieza",costo:700,precio:1100,inicial:12,minimo:5},
+      {codigo:"7790742000011",producto:"Leche entera 1 L",categoria:"Lácteos",costo:1250,precio:1650,inicial:30,minimo:15},
+      {codigo:"7790580100018",producto:"Alfajor triple",categoria:"Golosinas",costo:650,precio:1000,inicial:40,minimo:10}],
     stockMov:[
       {fecha:d(-10),producto:"Yerba 1 kg",tipo:"Entrada",cantidad:24,nota:"Pedido distribuidora"},
       {fecha:d(-10),producto:"Gaseosa cola 2,25 L",tipo:"Entrada",cantidad:36,nota:"Pedido distribuidora"},
@@ -261,13 +288,17 @@ function demoData(){
       {fecha:d(-3),producto:"Alfajor triple",tipo:"Salida",cantidad:40,nota:"Ventas semana"},
       {fecha:d(-1),producto:"Lavandina 1 L",tipo:"Ajuste",cantidad:-2,nota:"Se rompieron 2"}],
     turnos:[
-      {fecha:d(0),hora:"10:00",cliente:"Carla Méndez",whatsapp:"1167891234",servicio:"Color",precio:30000,sena:10000,estado:"Confirmado"},
-      {fecha:d(0),hora:"17:30",cliente:"Diego Paz",whatsapp:"1178912345",servicio:"Corte + barba",precio:16000,sena:0,estado:"Reservado"},
-      {fecha:d(1),hora:"11:00",cliente:"Sofía Luna",whatsapp:"1189123456",email:"sofia@ejemplo.com",servicio:"Corte",precio:12000,sena:0,estado:"Reservado"},
-      {fecha:d(1),hora:"15:30",cliente:"Lucas Vera",whatsapp:"1176543210",servicio:"Corte + barba",precio:16000,sena:0,estado:"Confirmado"},
-      {fecha:d(3),hora:"16:00",cliente:"Ana Torres",whatsapp:"1191234567",servicio:"Color",precio:30000,sena:10000,estado:"Reservado"},
+      {fecha:d(0),hora:"10:00",cliente:"Carla Méndez",whatsapp:"1167891234",servicio:"Color",precio:30000,sena:10000,estado:"Confirmado",profesional:"Laura",duracion:90},
+      {fecha:d(0),hora:"17:30",cliente:"Diego Paz",whatsapp:"1178912345",servicio:"Corte + barba",precio:16000,sena:0,estado:"Reservado",profesional:"Martín",duracion:45},
+      {fecha:d(1),hora:"11:00",cliente:"Sofía Luna",whatsapp:"1189123456",email:"sofia@ejemplo.com",servicio:"Corte",precio:12000,sena:0,estado:"Reservado",profesional:"Laura",duracion:30},
+      {fecha:d(1),hora:"15:30",cliente:"Lucas Vera",whatsapp:"1176543210",servicio:"Corte + barba",precio:16000,sena:0,estado:"Confirmado",profesional:"Martín",duracion:45},
+      {fecha:d(3),hora:"16:00",cliente:"Ana Torres",whatsapp:"1191234567",servicio:"Color",precio:30000,sena:10000,estado:"Reservado",profesional:"Laura",duracion:90},
       {fecha:d(-2),hora:"18:00",cliente:"Marcos Gil",whatsapp:"1112345678",servicio:"Corte",precio:12000,sena:0,estado:"Ausente"},
-      {fecha:d(-4),hora:"10:30",cliente:"Paula Ríos",whatsapp:"1123459876",servicio:"Corte",precio:12000,sena:0,estado:"Asistió"}]
+      {fecha:d(-4),hora:"10:30",cliente:"Paula Ríos",whatsapp:"1123459876",servicio:"Corte",precio:12000,sena:0,estado:"Asistió",profesional:"Martín"}],
+    recibos:[
+      {numero:1,fecha:d(-3),cliente:"Consumidor final",doc:"",concepto:"2 x Yerba 1 kg @5200 · 1 x Aceite girasol 1,5 L @3500",medio:"Efectivo",monto:13900,estado:"Emitido",obs:""},
+      {numero:2,fecha:d(-1),cliente:"Club Barrio Norte",doc:"30-71111222-5",concepto:"12 x Gaseosa cola 2,25 L @3100 · Descuento -2200",medio:"Transferencia",monto:35000,estado:"Facturar",obs:""},
+      {numero:3,fecha:d(0),cliente:"Marta Ruiz",doc:"",concepto:"6 x Leche entera 1 L @1650 · 4 x Alfajor triple @1000",medio:"Mercado Pago / QR",monto:13900,estado:"Presupuesto",obs:""}]
   };
 }
 
@@ -283,24 +314,26 @@ const api = {
   },
   async login(u,p){
     if (DEMO){
-      if (u.trim().toLowerCase()==="demo" && p==="demo1234"){ TOKEN="demo"; return demoData(); }
+      if (u.trim().toLowerCase()==="demo" && p==="demo1234"){ TOKEN="demo"; return norm(demoData()); }
       throw new Error("Usuario o contraseña incorrectos.");
     }
     const j = await api.call({action:"login", user:u.trim(), pass:p});
     TOKEN = j.token; store.set("ko_token", TOKEN);
-    return (await api.call({action:"data", token:TOKEN})).data;
+    return norm((await api.call({action:"data", token:TOKEN})).data);
   },
   async resume(){
     if (DEMO) return null;
     const t = store.get("ko_token"); if (!t) return null;
-    try{ TOKEN=t; return (await api.call({action:"data", token:t})).data; }catch(e){ store.del("ko_token"); return null; }
+    try{ TOKEN=t; return norm((await api.call({action:"data", token:t})).data); }catch(e){ store.del("ko_token"); return null; }
   },
   async add(sheet, row){
     if (!DEMO) await api.call({action:"add", token:TOKEN, sheet, row});
   },
   async update(sheet, key, changes){
     if (!DEMO) await api.call({action:"update", token:TOKEN, sheet, key, changes});
-  }
+  },
+  async addMany(items){ if (!DEMO && items.length) await api.call({action:"addMany", token:TOKEN, items}); },
+  async updateMany(items){ if (!DEMO && items.length) await api.call({action:"updateMany", token:TOKEN, items}); }
 };
 
 /* ---------------- cálculos ---------------- */
@@ -341,8 +374,8 @@ function stockEstado(){
     return {...p, actual, estado, margen, valor: actual*Number(p.costo||0)};
   });
 }
-const msgConfirmacion = x => `¡Hola ${x.cliente}! Te confirmamos tu turno de ${x.servicio} el ${dmy(x.fecha)} a las ${x.hora} en ${S.config.negocio}. Si no podés venir, avisanos por acá. ¡Te esperamos!`;
-const msgRecordatorio = x => `¡Hola ${x.cliente}! Te recordamos tu turno de ${x.servicio} mañana ${dmy(x.fecha)} a las ${x.hora} en ${S.config.negocio}. Respondé SI para confirmar o avisanos si no podés venir.`;
+const msgConfirmacion = x => `¡Hola ${x.cliente}! Te confirmamos tu turno de ${x.servicio}${x.profesional?" con "+x.profesional:""} el ${dmy(x.fecha)} a las ${x.hora} en ${S.config.negocio}. Si no podés venir, avisanos por acá. ¡Te esperamos!`;
+const msgRecordatorio = x => `¡Hola ${x.cliente}! Te recordamos tu turno de ${x.servicio}${x.profesional?" con "+x.profesional:""} el ${dmy(x.fecha)} a las ${x.hora} en ${S.config.negocio}. Respondé SI para confirmar o avisanos si no podés venir.`;
 const waLink = (num, msg) => "https://wa.me/549" + String(num||"").replace(/\D/g,"").replace(/^0/,"").replace(/^15/,"") + "?text=" + encodeURIComponent(msg);
 
 /* ---------------- UI ---------------- */
@@ -410,6 +443,8 @@ function vInicio(){
   const manT=S.turnos.filter(t=>t.fecha===iso(addDays(today(),1)) && t.estado!=="Cancelado" && !String(t.recordado||"").includes("WA"));
   if (mods.turnos!==false && manT.length) todo.push(["warn",`Recordá ${manT.length} turno${manT.length>1?"s":""} de mañana`,manT.map(t=>t.hora+" "+t.cliente).join(" · "),"turnos"]);
   if (mods.turnos!==false && hoyT.length) todo.push(["ok",`Confirmá ${hoyT.length} turno${hoyT.length>1?"s":""} de hoy`,hoyT.map(t=>t.hora+" "+t.cliente).join(" · "),"turnos"]);
+  const facPend=S.recibos.filter(x=>x.estado==="Facturar");
+  if (facPend.length) todo.push(["warn",`Hacé ${facPend.length} factura${facPend.length>1?"s":""} pendiente${facPend.length>1?"s":""}`,facPend.map(x=>"N° "+pad5(x.numero)+" "+x.cliente).join(" · "),"comp"]);
   if (!todo.length) todo.push(["ok","Todo en orden","No hay pendientes para hoy.","caja"]);
   const col={ok:"var(--ok)",warn:"var(--warn)",bad:"var(--bad)"};
   const vsPrev = prev.gan ? (r.gan/prev.gan-1) : null;
@@ -426,6 +461,7 @@ function vInicio(){
       <div class="k"><span>Mes anterior</span><b class="num">${fmt(prev.gan)}</b></div>
     </div>
   </section>
+  <div class="grid2"><button class="btn btn-primary" type="button" data-add="venta">Nueva venta</button><button class="btn btn-ghost" type="button" data-add="ingreso">+ Ingreso o gasto</button></div>
   <h2 class="sec">Qué hacer hoy</h2>
   <div class="todo">${todo.map(([c,t,s,g])=>`<button type="button" data-tab="${g}"><span class="dot" style="background:${col[c]}"></span><span><span class="t">${esc(t)}</span><br><span class="s">${esc(s)}</span></span></button>`).join("")}</div>
   <div class="tiles">
@@ -438,20 +474,23 @@ function vInicio(){
   <footer class="by2">Kit Orden · un sistema de <b>NEXOVAR</b></footer>`;
 }
 
+function cajaSeg(){ return `<div class="seg" role="group" aria-label="Período">
+    ${[["hoy","Hoy"],["semana","7 días"],["mes","Mes"],["comp","Tickets"]].map(([k,l])=>`<button type="button" data-cf="${k}" aria-pressed="${cajaFiltro===k}">${l}</button>`).join("")}
+  </div>`; }
 function vCaja(){
+  if (cajaFiltro==="comp") return vComprobantes();
   const t=today(); let from, label;
   if (cajaFiltro==="hoy"){ from=t; label="hoy"; } else if (cajaFiltro==="semana"){ from=addDays(t,-6); label="últimos 7 días"; } else { from=monthStart(0); label="este mes"; }
   const rows=S.caja.filter(r=>parseD(r.fecha)>=from).sort((a,b)=>parseD(b.fecha)-parseD(a.fecha));
   const ing=rows.filter(r=>r.tipo==="Ingreso").reduce((a,r)=>a+Number(r.monto),0);
   const eg=rows.filter(r=>r.tipo==="Egreso").reduce((a,r)=>a+Number(r.monto),0);
   return `
-  <div class="seg" role="group" aria-label="Período">
-    ${[["hoy","Hoy"],["semana","7 días"],["mes","Mes"]].map(([k,l])=>`<button type="button" data-cf="${k}" aria-pressed="${cajaFiltro===k}">${l}</button>`).join("")}
-  </div>
+  ${cajaSeg()}
   <div class="split">
     <div class="k"><span>Entró ${label}</span><b class="num in-c">${fmt(ing)}</b></div>
     <div class="k"><span>Salió ${label}</span><b class="num out-c">${fmt(eg)}</b></div>
   </div>
+  <button class="btn btn-primary" type="button" data-add="venta">Nueva venta (con ticket)</button>
   <div class="grid2">
     <button class="btn btn-ghost" type="button" data-add="ingreso">+ Ingreso</button>
     <button class="btn btn-ghost" type="button" data-add="egreso">− Gasto o retiro</button>
@@ -486,55 +525,66 @@ function vFiado(){
 }
 
 function vStock(){
-  const st=stockEstado().sort((a,b)=>({"SIN STOCK":0,"REPONER":1,"OK":2}[a.estado]-({"SIN STOCK":0,"REPONER":1,"OK":2}[b.estado])));
+  const all=stockEstado(), ord={"SIN STOCK":0,"REPONER":1,"OK":2};
+  const cats=["Todas",...new Set(all.map(p=>p.categoria).filter(Boolean))];
+  if(!cats.includes(stockCat)) stockCat="Todas";
+  const st=all.filter(p=>stockCat==="Todas"||p.categoria===stockCat).sort((a,b)=>ord[a.estado]-ord[b.estado]||a.producto.localeCompare(b.producto));
   const cls={"OK":"ok","REPONER":"warn","SIN STOCK":"bad"};
-  const valor=st.reduce((a,p)=>a+p.valor,0);
-  const pedido=st.filter(p=>p.estado!=="OK");
+  const valor=all.reduce((a,p)=>a+p.valor,0);
+  const pedido=all.filter(p=>p.estado!=="OK");
   return `
   <div class="split">
     <div class="k"><span>Para reponer</span><b class="num">${pedido.length}</b></div>
     <div class="k"><span>Mercadería a costo</span><b class="num">${fmt(valor)}</b></div>
   </div>
   <div class="grid2">
-    <button class="btn btn-ghost" type="button" data-add="entrada">+ Llegó mercadería</button>
-    <button class="btn btn-ghost" type="button" data-add="salida">− Vendí / salió</button>
+    <button class="btn btn-primary" type="button" data-add="venta">Vender</button>
+    <button class="btn btn-ghost" type="button" data-add="pedido">+ Llegó un pedido</button>
   </div>
-  <div class="list">${st.map(p=>`
-    <div class="it"><div class="m"><b>${esc(p.producto)}</b><span>${esc(p.categoria)} · margen ${pct(p.margen)} · mín. ${p.minimo}</span></div>
-      <div style="display:grid;gap:4px;justify-items:end"><b class="num" style="font-size:18px">${p.actual}</b><span class="chip ${cls[p.estado]}">${p.estado}</span></div></div>`).join("")}
+  <div class="srch"><input class="in" id="stQ" placeholder="Buscar producto o código" aria-label="Buscar producto">${SCAN_OK?`<button class="btn btn-ghost" type="button" id="stScan" aria-label="Escanear código">▦</button>`:""}</div>
+  ${cats.length>2?`<div class="chips">${cats.map(c=>`<button type="button" data-sc="${esc(c)}" aria-pressed="${stockCat===c}">${esc(c)}</button>`).join("")}</div>`:""}
+  <div class="list" id="stList">${st.length?st.map(p=>`
+    <button class="it rowbtn" type="button" data-prod="${esc(p.producto)}" data-q="${esc((p.producto+" "+(p.codigo||"")).toLowerCase())}"><div class="m"><b>${esc(p.producto)}</b><span>${fmt(p.precio)} · margen ${pct(p.margen)} · mín. ${p.minimo}</span></div>
+      <div style="display:grid;gap:4px;justify-items:end"><b class="num" style="font-size:18px">${fmtQ(p.actual)}</b><span class="chip ${cls[p.estado]}">${p.estado}</span></div></button>`).join(""):`<div class="empty">No hay productos cargados.</div>`}
   </div>
+  <p class="mini">Tocá un producto para sumar, restar, contar o cambiarle el precio.</p>
   ${pedido.length?`<button class="btn btn-wa" type="button" id="copyPedido">Copiar lista de pedido</button>`:""}
-  <button class="btn btn-ghost" type="button" data-add="producto">+ Nuevo producto</button>`;
+  <div class="grid2"><button class="btn btn-ghost" type="button" data-add="producto">+ Nuevo producto</button><button class="btn btn-ghost" type="button" data-add="precios">Actualizar precios %</button></div>`;
 }
 
 function vTurnos(){
-  const t=today(); const iT=iso(t);
-  const up=S.turnos.filter(x=>parseD(x.fecha)>=t && x.estado!=="Cancelado").sort((a,b)=>(a.fecha+a.hora).localeCompare(b.fecha+b.hora));
-  const a=monthStart(0); const mes=S.turnos.filter(x=>parseD(x.fecha)>=a && parseD(x.fecha)<t);
+  const t=today(); const iT=iso(t), emps=EMPS();
+  if(turnoProf!=="Todos" && !emps.includes(turnoProf)) turnoProf="Todos";
+  const fp=x=>turnoProf==="Todos"||x.profesional===turnoProf;
+  const up=S.turnos.filter(x=>parseD(x.fecha)>=t && x.estado!=="Cancelado" && fp(x)).sort((a,b)=>(a.fecha+a.hora).localeCompare(b.fecha+b.hora));
+  const a=monthStart(0); const mes=S.turnos.filter(x=>parseD(x.fecha)>=a && parseD(x.fecha)<t && fp(x));
   const aus=mes.filter(x=>x.estado==="Ausente").length, asis=mes.filter(x=>x.estado==="Asistió").length;
   const cls={"Reservado":"neu","Confirmado":"ok","Asistió":"ok","Ausente":"bad","Cancelado":"neu"};
   const groups={}; up.forEach(x=>(groups[x.fecha]=groups[x.fecha]||[]).push(x));
   const dname=s=>{ const d=parseD(s); if (s===iT) return "Hoy"; if (s===iso(addDays(t,1))) return "Mañana"; return d.toLocaleDateString("es-AR",{weekday:"long",day:"numeric",month:"short"}); };
   const man=iso(addDays(t,1)), manana=(groups[man]||[]);
+  const hoyAll=S.turnos.filter(x=>x.fecha===iT && x.estado!=="Cancelado");
+  const porProf=emps.map(e=>e+" "+hoyAll.filter(x=>x.profesional===e).length).join(" · ");
   const remHTML = manana.length ? `<section class="rem"><h3>Recordar los turnos de mañana (${manana.length})</h3>
-    ${manana.map(x=>`<div class="it" style="background:var(--surface);border-radius:12px"><div class="m"><b>${esc(x.hora)} · ${esc(x.cliente)}</b><span>${esc(x.servicio)}${x.email?" · 📧 se le recuerda por mail automático":""}${String(x.recordado||"").includes("WA")?" · ✓ recordado por WhatsApp":""}</span></div>
+    ${manana.map(x=>`<div class="it" style="background:var(--surface);border-radius:12px"><div class="m"><b>${esc(x.hora)} · ${esc(x.cliente)}</b><span>${esc(x.servicio)}${x.profesional?" · "+esc(x.profesional):""}${x.email?" · 📧 se le recuerda por mail automático":""}${String(x.recordado||"").includes("WA")?" · ✓ recordado por WhatsApp":""}</span></div>
     ${x.whatsapp?`<a class="wa" target="_blank" rel="noopener" data-recordar="${esc(x.fecha+"|"+x.hora+"|"+x.cliente)}" href="${esc(waLink(x.whatsapp,msgRecordatorio(x)))}">WhatsApp</a>`:""}</div>`).join("")}</section>` : "";
   return `
   ${remHTML}
   <div class="split">
-    <div class="k"><span>Turnos hoy</span><b class="num">${(groups[iT]||[]).length}</b></div>
+    <div class="k"><span>Turnos hoy</span><b class="num">${(groups[iT]||[]).length}</b>${emps.length&&turnoProf==="Todos"?`<span>${esc(porProf)}</span>`:""}</div>
     <div class="k"><span>Ausentismo del mes</span><b class="num">${(aus+asis)?pct(aus/(aus+asis)):"–"}</b></div>
   </div>
-  <button class="btn btn-ghost" type="button" data-add="turno">+ Nuevo turno</button>
+  ${emps.length?`<div class="chips">${["Todos",...emps].map(e=>`<button type="button" data-tp="${esc(e)}" aria-pressed="${turnoProf===e}">${esc(e)}</button>`).join("")}</div>`:""}
+  <button class="btn btn-primary" type="button" data-add="turno">+ Nuevo turno</button>
   ${Object.keys(groups).length? Object.entries(groups).map(([f,xs])=>`
     <h2 class="sec">${esc(dname(f))}</h2>
     <div class="list">${xs.map(x=>`
       <div class="it"><div class="ico n num" style="font-size:12px">${esc(x.hora)}</div>
-        <div class="m"><b>${esc(x.cliente)}</b><span>${esc(x.servicio)} · ${fmt(x.precio)}${Number(x.sena)?" · seña "+fmt(x.sena):""}</span><br><span class="chip ${cls[x.estado]}">${esc(x.estado)}</span></div>
+        <div class="m"><b>${esc(x.cliente)}</b><span>${esc(x.servicio)} · ${fmt(x.precio)}${Number(x.sena)?" · seña "+fmt(x.sena):""} · ${Number(x.duracion)||30} min</span><br>${x.profesional?`<span class="prof">${esc(x.profesional)}</span> `:""}<span class="chip ${cls[x.estado]}">${esc(x.estado)}</span></div>
         <div style="display:grid;gap:6px;justify-items:end">
           ${x.whatsapp?`<a class="wa" target="_blank" rel="noopener" data-recordar="${esc(x.fecha+"|"+x.hora+"|"+x.cliente)}" href="${esc(waLink(x.whatsapp,msgRecordatorio(x)))}">Recordar</a>`:""}
           <button class="btn btn-ghost" style="padding:6px 10px;font-size:12.5px" type="button" data-turno="${esc(x.fecha+"|"+x.hora+"|"+x.cliente)}">Estado</button>
-        </div></div>`).join("")}</div>`).join("") : `<div class="list"><div class="empty">No hay turnos próximos. Tocá + para dar uno.</div></div>`}`;
+        </div></div>`).join("")}</div>`).join("") : `<div class="list"><div class="empty">No hay turnos próximos${turnoProf!=="Todos"?" para "+esc(turnoProf):""}. Tocá + para dar uno.</div></div>`}`;
 }
 
 function installBanner(){
@@ -565,6 +615,9 @@ const ingresoCats = () => C().categorias.filter(c=>["Ventas","Servicios","Cobro 
 const egresoCats = () => C().categorias.filter(c=>!["Ventas","Servicios","Cobro de fiado","Otros ingresos"].includes(c));
 
 function openAdd(kind){
+  if (kind==="venta"){ openVenta(); return; }
+  if (kind==="pedido"){ openPedido(); return; }
+  if (kind==="precios"){ openPrecios(); return; }
   const hoy=iso(today());
   const fecha=`<label class="f" for="f_fecha">Fecha<input class="in" id="f_fecha" type="date" name="fecha" value="${hoy}" required></label>`;
   if (kind==="ingreso"||kind==="egreso"){
@@ -612,11 +665,14 @@ function openAdd(kind){
   else if (kind==="producto"){
     sheet("Nuevo producto", `
       <label class="f" for="f_prod">Producto<input class="in" id="f_prod" name="producto" required></label>
+      <div class="grid2"><label class="f" for="f_cod">Código de barras (opcional)<input class="in num" id="f_cod" name="codigo" inputmode="numeric"></label>
+      <label class="f" for="f_catp">Categoría<input class="in" id="f_catp" name="categoria" list="f_catpl" placeholder="Otros"><datalist id="f_catpl">${[...new Set(S.stock.map(x=>x.categoria).filter(Boolean))].map(c=>`<option value="${esc(c)}">`).join("")}</datalist></label></div>
       <div class="grid2"><label class="f" for="f_cos">Costo<input class="in num" id="f_cos" name="costo" inputmode="decimal" required></label>
       <label class="f" for="f_pre">Precio de venta<input class="in num" id="f_pre" name="precio" inputmode="decimal" required></label>
       <label class="f" for="f_ini">Stock de hoy<input class="in num" id="f_ini" name="inicial" inputmode="numeric" required></label>
       <label class="f" for="f_min">Mínimo para pedir<input class="in num" id="f_min" name="minimo" inputmode="numeric" required></label></div>`,
-      async d=>{ const row={codigo:"",producto:d.producto.trim(),categoria:"Otros",costo:money(d.costo),precio:money(d.precio),inicial:Number(d.inicial)||0,minimo:Number(d.minimo)||0};
+      async d=>{ if(S.stock.some(x=>x.producto.toLowerCase()===d.producto.trim().toLowerCase())) throw new Error("Ya existe un producto con ese nombre.");
+        const row={codigo:(d.codigo||"").trim(),producto:d.producto.trim(),categoria:(d.categoria||"").trim()||"Otros",costo:money(d.costo),precio:money(d.precio),inicial:Number(d.inicial)||0,minimo:Number(d.minimo)||0};
         await api.add("STOCK",row); S.stock.push(row); return "Producto agregado"; });
   }
   else if (kind==="turno"){
@@ -626,22 +682,35 @@ function openAdd(kind){
       <label class="f" for="f_wa">WhatsApp (sin 0 ni 15)<input class="in num" id="f_wa" name="whatsapp" inputmode="tel"></label>
       <label class="f" for="f_mail">Mail (opcional: le llega un recordatorio automático el día anterior)<input class="in" id="f_mail" name="email" type="email" inputmode="email"></label>
       <div class="grid2">${fecha}<label class="f" for="f_hora">Hora<input class="in" id="f_hora" type="time" name="hora" value="10:00" required></label></div>
-      <div class="grid2"><label class="f" for="f_sv">Servicio<select class="in" id="f_sv" name="servicio">${opts(sv.map(s=>s.nombre))}</select></label>
-      <label class="f" for="f_sena">Seña (opcional)<input class="in num" id="f_sena" name="sena" inputmode="decimal"></label></div>`,
-      async d=>{ const s=sv.find(x=>x.nombre===d.servicio)||{precio:0};
-        const row={fecha:d.fecha,hora:d.hora,cliente:d.cliente.trim(),whatsapp:d.whatsapp.replace(/\D/g,""),email:(d.email||"").trim(),servicio:d.servicio,precio:s.precio,sena:d.sena?money(d.sena):0,estado:"Reservado",recordado:""};
-        await api.add("TURNOS",row); S.turnos.push(row); setTimeout(()=>avisoTurno(row),60); return "Turno agendado"; });
+      <div class="grid2"><label class="f" for="f_sv">Servicio<select class="in" id="f_sv" name="servicio">${sv.map(s=>`<option value="${esc(s.nombre)}">${esc(s.nombre)} · ${s.minutos||30} min</option>`).join("")}</select></label>
+      <label class="f" for="f_sena">Seña (opcional)<input class="in num" id="f_sena" name="sena" inputmode="decimal"></label></div>
+      ${EMPS().length?`<label class="f" for="f_prof">Profesional<select class="in" id="f_prof" name="profesional"><option value="Cualquiera">Cualquiera que esté libre</option>${opts(EMPS(), turnoProf!=="Todos"?turnoProf:"")}</select></label>`:""}`,
+      async d=>{ const s=sv.find(x=>x.nombre===d.servicio)||{precio:0,minutos:30}; const dur=Number(s.minutos)||30;
+        let prof="";
+        if(EMPS().length){ const r=asignar(d.profesional,d.fecha,d.hora,dur);
+          if(!r.prof) throw new Error((d.profesional&&d.profesional!=="Cualquiera"?d.profesional+" ya tiene un turno a esa hora.":"No hay nadie libre a esa hora.")+(r.sug?" Primer horario libre: "+r.sug+".":""));
+          prof=r.prof; }
+        const row={fecha:d.fecha,hora:d.hora,cliente:d.cliente.trim(),whatsapp:d.whatsapp.replace(/\D/g,""),email:(d.email||"").trim(),servicio:d.servicio,precio:s.precio,sena:d.sena?money(d.sena):0,estado:"Reservado",recordado:"",profesional:prof,duracion:dur};
+        await api.add("TURNOS",row); S.turnos.push(row); setTimeout(()=>avisoTurno(row),60); return "Turno agendado"+(prof?" con "+prof:""); });
   }
 }
 function openTurnoEstado(key){
   const [f,h,c]=key.split("|"); const t=S.turnos.find(x=>x.fecha===f&&x.hora===h&&x.cliente===c); if(!t) return;
-  sheet("Estado del turno · "+c, `<label class="f" for="f_est">Estado<select class="in" id="f_est" name="estado">${opts(["Reservado","Confirmado","Asistió","Ausente","Cancelado"],t.estado)}</select></label>`,
-    async d=>{ await api.update("TURNOS",{fecha:f,hora:h,cliente:c},{estado:d.estado}); t.estado=d.estado; return "Turno actualizado"; });
+  sheet("Turno · "+c, `<p class="mini" style="margin:0">${esc(t.servicio)} · ${dmy(t.fecha)} ${esc(t.hora)} · ${fmt(t.precio)}${Number(t.sena)?" (seña "+fmt(t.sena)+")":""}</p>
+    <label class="f" for="f_est">Estado<select class="in" id="f_est" name="estado">${opts(["Reservado","Confirmado","Asistió","Ausente","Cancelado"],t.estado)}</select></label>
+    ${EMPS().length?`<label class="f" for="f_prof">Profesional<select class="in" id="f_prof" name="profesional">${opts(EMPS(),t.profesional||"")}</select></label>`:""}
+    <label class="chk"><input type="checkbox" name="cobrar" ${t.estado==="Asistió"?"":"checked"}> Si vino, abrir el cobro con ticket</label>`,
+    async d=>{ const ch={estado:d.estado};
+      if(d.profesional && d.profesional!==(t.profesional||"")){ if(ocupado(d.profesional,t.fecha,t.hora,t.duracion,t)) throw new Error(d.profesional+" ya tiene un turno a esa hora."); ch.profesional=d.profesional; }
+      await api.update("TURNOS",{fecha:f,hora:h,cliente:c},ch); Object.assign(t,ch);
+      if(d.estado==="Asistió" && d.cobrar){ const sv=(C().servicios||[]).find(x=>x.nombre===t.servicio);
+        setTimeout(()=>openVenta({items:[{n:t.servicio,p:Number(t.precio)||(sv?sv.precio:0),q:1,stock:false}], cliente:t.cliente, wa:t.whatsapp, desc:Number(t.sena)||"", emp:t.profesional||"", from:"Turno "+dmy(t.fecha)+" "+t.hora}),80); }
+      return "Turno actualizado"; });
 }
 function avisoTurno(x){
   if(!x.whatsapp){ return; }
   $("#modal").innerHTML = `<div class="scrim" id="scrim"><div class="sheet"><h3>Avisale el turno a ${esc(x.cliente)}</h3>
-    <p style="margin:0;color:var(--muted)">${esc(x.servicio)} · ${dmy(x.fecha)} a las ${esc(x.hora)}${x.email?"<br>📧 El día anterior le llega un recordatorio automático por mail.":""}</p>
+    <p style="margin:0;color:var(--muted)">${esc(x.servicio)}${x.profesional?" con "+esc(x.profesional):""} · ${dmy(x.fecha)} a las ${esc(x.hora)}${x.email?"<br>📧 El día anterior le llega un recordatorio automático por mail.":""}</p>
     <a class="btn btn-wa" target="_blank" rel="noopener" href="${esc(waLink(x.whatsapp,msgConfirmacion(x)))}">Mandar confirmación por WhatsApp</a>
     <button class="btn btn-ghost" type="button" id="cancel">Listo</button></div></div>`;
   $("#cancel").onclick=()=>{$("#modal").innerHTML="";};
@@ -667,18 +736,19 @@ function cuentaData(cliente){
 }
 function ticketHTML(t){
   return `<div class="ticket" id="printArea"><div class="th"><img src="${esc(S.config.logo||DEFAULT_LOGO)}" alt=""><div><b>${esc(S.config.negocio)}</b><span style="font-size:12px;color:#555">${esc(t.titulo)}${t.numero?" · N° "+t.numero:""}</span></div></div>
-  <div class="row2"><span>Fecha</span><b>${esc(t.fecha)}</b></div><div class="row2"><span>Cliente</span><b>${esc(t.cliente)}</b></div>
+  ${t.emisor?`<div class="em">${esc(t.emisor)}</div>`:""}<div class="row2"><span>Fecha</span><b>${esc(t.fecha)}</b></div><div class="row2"><span>Cliente</span><b>${esc(t.cliente)}</b></div>
   <table>${t.items.map(([a,b])=>`<tr><td>${esc(a)}</td><td>${esc(b)}</td></tr>`).join("")}</table>
   <div class="row2 tot"><span>${esc(t.total)}</span></div>${t.saldo?`<div class="row2"><span>${esc(t.saldo)}</span></div>`:""}
-  <div class="foot">Documento no válido como factura · Kit Orden by NEXOVAR</div></div>`;
+  <div class="foot">${t.titulo==="PRESUPUESTO"?"Presupuesto · ":""}Documento no válido como factura · Kit Orden by NEXOVAR</div></div>`;
 }
 async function ticketPNG(t){
-  const W=560, lh=30, rows=t.items.length; const H=250+rows*lh+(t.saldo?lh:0);
+  const W=560, lh=30, rows=t.items.length; const H=250+rows*lh+(t.saldo?lh:0)+(t.emisor?24:0);
   const c=document.createElement("canvas"); c.width=W*2; c.height=H*2; const x=c.getContext("2d"); x.scale(2,2);
   x.fillStyle="#fff"; x.fillRect(0,0,W,H); x.fillStyle="#000A3F"; x.fillRect(0,0,W,70);
   try{ const im=new Image(); im.src=S.config.logo||DEFAULT_LOGO; await im.decode(); x.fillStyle="#fff"; x.fillRect(16,11,48,48); x.drawImage(im,18,13,44,44);}catch(e){}
   x.fillStyle="#fff"; x.font="bold 20px Figtree, Arial"; x.fillText(S.config.negocio,76,34); x.font="13px Figtree, Arial"; x.fillText(t.titulo+(t.numero?" · N° "+t.numero:""),76,54);
   x.fillStyle="#111"; x.font="15px Figtree, Arial"; let y=104;
+  if(t.emisor){ x.font="12px Figtree, Arial"; x.fillStyle="#555"; x.fillText(t.emisor.length>80?t.emisor.slice(0,79)+"…":t.emisor,24,y-8); x.fillStyle="#111"; y+=18; }
   const line=(a,b,bold)=>{ x.font=(bold?"bold ":"")+"15px Figtree, Arial"; x.textAlign="left"; x.fillText(a,24,y); if(b){x.textAlign="right"; x.fillText(b,W-24,y); x.textAlign="left";} y+=lh; };
   line("Fecha",t.fecha,true); line("Cliente",t.cliente,true);
   x.strokeStyle="#9AA6B2"; x.setLineDash([5,4]); x.beginPath(); x.moveTo(24,y-14); x.lineTo(W-24,y-14); x.stroke(); y+=6;
@@ -689,7 +759,7 @@ async function ticketPNG(t){
   return await new Promise(r=>c.toBlob(r,"image/png"));
 }
 function openTicketView(t){
-  $("#modal").innerHTML = `<div class="scrim" id="scrim"><div class="sheet"><h3>${esc(t.titulo==="ESTADO DE CUENTA"?"Estado de cuenta":"Ticket para el cliente")}</h3>${ticketHTML(t)}
+  $("#modal").innerHTML = `<div class="scrim" id="scrim"><div class="sheet"><h3>${esc(t.titulo==="ESTADO DE CUENTA"?"Estado de cuenta":t.titulo==="PRESUPUESTO"?"Presupuesto para el cliente":"Ticket para el cliente")}</h3>${ticketHTML(t)}
     <div class="btn-row">${t.wa?`<a class="btn btn-wa" target="_blank" rel="noopener" href="${esc(waLink(t.wa,t.texto))}">Enviar por WhatsApp</a>`:`<button class="btn btn-ghost" type="button" disabled>Sin WhatsApp cargado</button>`}
     <button class="btn btn-ghost" type="button" id="tkImg">Imagen para compartir</button></div>
     <div class="btn-row"><button class="btn btn-ghost" type="button" id="tkPrint">Imprimir</button><button class="btn btn-primary" type="button" id="cancel">Listo</button></div></div></div>`;
@@ -704,11 +774,303 @@ function openTicketView(t){
 }
 const openTicket = row => openTicketView(ticketData(row));
 
-const FAB_DEFAULT = {inicio:"ingreso", caja:"ingreso", fiado:"fiado", stock:"entrada", turnos:"turno"};
+/* ===================== v3: ventas, comprobantes, stock rápido, profesionales ===================== */
+const numF = v => { const n=Number(String(v??"").trim().replace(/\./g,"").replace(",",".").replace(/[^\d.-]/g,"")); return isFinite(n)?n:0; };
+const pad5 = n => String(n).padStart(5,"0");
+const toMin = h => { const [a,b]=String(h||"0:0").split(":").map(Number); return (a||0)*60+(b||0); };
+const fromMin = m => String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
+const EMPS = () => (S.config.empleados||[]).filter(Boolean);
+const SCAN_OK = "BarcodeDetector" in window;
+function norm(d){
+  d.recibos=d.recibos||[]; d.config.empleados=d.config.empleados||[];
+  d.config.servicios=(d.config.servicios||[]).map(s=>({minutos:30,...s, minutos:Number(s.minutos)||30}));
+  d.config.modulos=Object.assign({recibos:true},d.config.modulos||{});
+  d.turnos.forEach(t=>{ t.duracion=Number(t.duracion)||((d.config.servicios.find(s=>s.nombre===t.servicio)||{}).minutos)||30; });
+  return d;
+}
+function nextNum(){ return S.recibos.reduce((m,r)=>Math.max(m,Number(r.numero)||0),0)+1; }
+function parseItems(concepto){
+  return String(concepto||"").split(" · ").map(p=>{
+    const m=p.match(/^([\d.,]+) x (.+) @(-?[\d.]+)$/); if(m) return {q:numF(m[1]), n:m[2], p:Number(m[3])};
+    const d=p.match(/^Descuento (-?[\d.]+)$/); if(d) return {q:1, n:"Descuento", p:Number(d[1]), desc:true};
+    return p?{q:1,n:p,p:null}:null;
+  }).filter(Boolean);
+}
+
+/* ---------- comprobantes ---------- */
+function emisorLines(){ const c=S.config; return [c.cuit?("CUIT "+c.cuit):"", c.iva||"", c.direccion||""].filter(Boolean).join(" · "); }
+function comprobanteData(r){
+  const items=parseItems(r.concepto), pres=r.estado==="Presupuesto", fiado=r.medio==="Fiado";
+  const cl=(S.fiadoClientes.find(c=>c.cliente===r.cliente)||{});
+  const wa=r.wa||cl.whatsapp||"";
+  const lines=items.map(i=>i.p==null?[i.n,""]:[i.desc?"Descuento":(fmtQ(i.q)+" x "+i.n), (i.p<0?"− ":"")+fmt(Math.abs(i.q*i.p))]);
+  const titulo=pres?"PRESUPUESTO":(r.estado==="Anulado"?"TICKET ANULADO":"TICKET DE VENTA");
+  const d=parseD(r.fecha);
+  return {titulo, numero:pad5(r.numero), fecha:dmy(r.fecha)+"/"+(d?d.getFullYear():""), cliente:r.cliente+(r.doc?" · "+r.doc:""),
+    items:lines, total:"Total "+fmt(r.monto), saldo: pres?"Válido por 7 días":(fiado?"A cuenta corriente (fiado)":"Pagó con: "+(r.medio||"")), wa,
+    emisor:emisorLines(),
+    texto:`${S.config.negocio}\n${pres?"Presupuesto":"Ticket de venta"} N° ${pad5(r.numero)} · ${dmy(r.fecha)}\nCliente: ${r.cliente}\n`+items.map(i=>i.p==null?i.n:(i.desc?"Descuento: − "+fmt(Math.abs(i.p)):`${fmtQ(i.q)} x ${i.n}: ${fmt(i.q*i.p)}`)).join("\n")+`\nTotal: ${fmt(r.monto)}\n${pres?"Presupuesto válido por 7 días.":"¡Gracias por tu compra!"}`};
+}
+const fmtQ = q => (Math.round(q*100)/100).toLocaleString("es-AR");
+
+/* ---------- venta (carrito) ---------- */
+let CART=null;
+function openVenta(pre={}){
+  const st=stockEstado(), sv=C().servicios||[];
+  CART={items:(pre.items||[]).map(i=>({...i})), cliente:pre.cliente||"", doc:"", wa:pre.wa||"", desc:pre.desc?String(pre.desc):"", tipo:pre.tipo||"venta", from:pre.from||null};
+  const catalog=[...st.map(p=>({n:p.producto,p:Number(p.precio)||0,stock:true,cod:String(p.codigo||""),act:p.actual})), ...sv.map(s=>({n:s.nombre,p:Number(s.precio)||0,stock:false,cod:""}))];
+  const cls=S.fiadoClientes.map(c=>c.cliente);
+  $("#modal").innerHTML=`<div class="scrim" id="scrim"><form class="sheet" id="vForm" autocomplete="off">
+    <h3>${pre.tipo==="presupuesto"?"Nuevo presupuesto":"Nueva venta"}</h3>
+    <div class="seg" role="group" aria-label="Tipo"><button type="button" data-vt="venta" aria-pressed="${CART.tipo==="venta"}">Venta</button><button type="button" data-vt="presupuesto" aria-pressed="${CART.tipo==="presupuesto"}">Presupuesto</button></div>
+    <div class="srch"><input class="in" id="vQ" placeholder="Buscar producto o servicio, o escanear código" enterkeyhint="search">${SCAN_OK?`<button class="btn btn-ghost" type="button" id="vScan" aria-label="Escanear código">▦</button>`:""}</div>
+    <div class="res" id="vRes"></div>
+    <details class="libre"><summary>+ Ítem sin cargar (monto suelto)</summary><div class="grid2"><input class="in" id="vLn" placeholder="Descripción"><input class="in num" id="vLp" inputmode="decimal" placeholder="Precio"></div><button class="btn btn-ghost" type="button" id="vLadd">Agregar ítem</button></details>
+    <div class="cart" id="vCart"></div>
+    <div class="grid2"><label class="f" for="vDesc">Descuento ($ o %)<input class="in num" id="vDesc" inputmode="decimal" placeholder="Ej: 10% o 500" value="${esc(CART.desc)}"></label>
+      <div class="tot2"><span>Total</span><b class="num" id="vTot">$ 0</b></div></div>
+    <label class="f" for="vCli">Cliente (opcional)<input class="in" id="vCli" list="vCliL" value="${esc(CART.cliente)}" placeholder="Consumidor final"><datalist id="vCliL">${cls.map(c=>`<option value="${esc(c)}">`).join("")}</datalist></label>
+    <div class="grid2"><label class="f" for="vDoc">DNI / CUIT (opcional)<input class="in num" id="vDoc" inputmode="numeric"></label>
+      <label class="f" for="vWa">WhatsApp (opcional)<input class="in num" id="vWa" inputmode="tel" value="${esc(CART.wa)}"></label></div>
+    <div class="grid2"><label class="f" for="vMedio">Cobro<select class="in" id="vMedio">${opts(C().medios)}${S.config.modulos.fiado!==false?`<option value="Fiado">Fiado (cuenta corriente)</option>`:""}</select></label>
+      ${EMPS().length?`<label class="f" for="vEmp">Atendió<select class="in" id="vEmp"><option value="">—</option>${opts(EMPS(), pre.emp||"")}</select></label>`:"<span></span>"}</div>
+    <label class="chk" id="vFacW"><input type="checkbox" id="vFac"> El cliente pide factura (queda en "Para facturar")</label>
+    <p class="err" id="formErr"></p>
+    <div class="grid2"><button class="btn btn-ghost" type="button" id="cancel">Cancelar</button><button class="btn btn-primary" type="submit" id="vOk">Cobrar</button></div>
+  </form></div>`;
+  const close=()=>{ stopScan(); $("#modal").innerHTML=""; CART=null; };
+  $("#cancel").onclick=close; $("#scrim").addEventListener("click",e=>{ if(e.target.id==="scrim") close(); });
+  const q=$("#vQ"), res=$("#vRes");
+  const addItem=(it,qty=1)=>{ const ex=CART.items.find(x=>x.n===it.n&&x.p===it.p); if(ex) ex.q+=qty; else CART.items.push({n:it.n,p:it.p,q:qty,stock:!!it.stock}); drawCart(); };
+  const showRes=()=>{ const t=q.value.trim().toLowerCase(); if(!t){ res.innerHTML=""; return; }
+    const hits=catalog.filter(x=>x.n.toLowerCase().includes(t)||(x.cod&&x.cod===t)).slice(0,6);
+    res.innerHTML=hits.length?hits.map((x,i)=>`<button type="button" data-hit="${i}"><span>${esc(x.n)}${x.stock?` <small>(${x.act} en stock)</small>`:""}</span><b class="num">${fmt(x.p)}</b></button>`).join(""):`<div class="mini" style="padding:8px">No está cargado. Usá "Ítem sin cargar".</div>`;
+    res._hits=hits; };
+  q.addEventListener("input",showRes);
+  q.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); const t=q.value.trim(); const byCod=catalog.find(x=>x.cod&&x.cod===t); const h=byCod||(res._hits||[])[0]; if(h){ addItem(h); q.value=""; showRes(); } } });
+  res.addEventListener("click",e=>{ const b=e.target.closest("[data-hit]"); if(!b) return; addItem(res._hits[+b.dataset.hit]); q.value=""; showRes(); q.focus(); });
+  $("#vLadd").onclick=()=>{ const n=$("#vLn").value.trim()||"Varios", p=numF($("#vLp").value); if(!p){ $("#formErr").textContent="Poné el precio del ítem."; return; } addItem({n,p}); $("#vLn").value=""; $("#vLp").value=""; $("#formErr").textContent=""; };
+  if($("#vScan")) $("#vScan").onclick=()=>openScanner(code=>{ const h=catalog.find(x=>x.cod===code); if(h){ addItem(h); toast("Agregado: "+h.n); } else toast("Código "+code+" no está cargado"); }, true);
+  $("#vDesc").addEventListener("input",drawCart);
+  $("#vCli").addEventListener("change",()=>{ const c=S.fiadoClientes.find(x=>x.cliente===$("#vCli").value.trim()); if(c&&c.whatsapp&&!$("#vWa").value) $("#vWa").value=c.whatsapp; });
+  $("#vForm").addEventListener("click",e=>{ const b=e.target.closest("[data-vt]"); if(!b) return; CART.tipo=b.dataset.vt; $$("[data-vt]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.vt===CART.tipo)); drawCart(); });
+  $("#vCart").addEventListener("click",e=>{ const b=e.target.closest("[data-cq]"); if(!b) return; const [i,d]=b.dataset.cq.split("|").map(Number); const it=CART.items[i]; it.q=Math.round((it.q+d)*100)/100; if(it.q<=0) CART.items.splice(i,1); drawCart(); });
+  $("#vCart").addEventListener("change",e=>{ const inp=e.target.closest("[data-cp]"); if(!inp) return; const it=CART.items[+inp.dataset.cp]; it.p=numF(inp.value); drawCart(); });
+  $("#vForm").addEventListener("submit",async e=>{ e.preventDefault(); const b=$("#vOk"); b.disabled=true; try{ const rec=await guardarVenta(); close(); render(); toast(rec.estado==="Presupuesto"?"Presupuesto guardado":"Venta registrada"); setTimeout(()=>openTicketView(comprobanteData(rec)),60); }catch(err){ $("#formErr").textContent=err.message; b.disabled=false; } });
+  drawCart(); setTimeout(()=>q.focus(),60);
+}
+const $$ = (s, el=document) => [...el.querySelectorAll(s)];
+function cartTotals(){
+  const sub=CART.items.reduce((a,i)=>a+i.q*i.p,0);
+  const dv=String($("#vDesc")?.value||"").trim(); let desc=0;
+  if(dv.endsWith("%")) desc=Math.round(sub*numF(dv.slice(0,-1))/100); else desc=numF(dv);
+  desc=Math.max(0,Math.min(desc,sub));
+  return {sub, desc, total:Math.max(0,sub-desc)};
+}
+function drawCart(){
+  if(!CART) return; const t=cartTotals();
+  $("#vCart").innerHTML=CART.items.length?CART.items.map((i,k)=>`<div class="ci"><div class="m"><b>${esc(i.n)}</b><span class="num">${fmt(i.q*i.p)}</span></div>
+    <input class="in num pr" data-cp="${k}" value="${i.p}" inputmode="decimal" aria-label="Precio de ${esc(i.n)}">
+    <div class="step"><button type="button" data-cq="${k}|-1" aria-label="Uno menos">−</button><b class="num">${fmtQ(i.q)}</b><button type="button" data-cq="${k}|1" aria-label="Uno más">+</button></div></div>`).join("")
+    :`<div class="empty" style="padding:14px">Buscá un producto o servicio para empezar.</div>`;
+  $("#vTot").innerHTML=fmt(t.total)+(t.desc?`<small class="mini" style="display:block;text-align:right">descuento −${fmt(t.desc)}</small>`:"");
+  const pres=CART.tipo==="presupuesto"; $("#vOk").textContent=pres?"Guardar presupuesto":"Cobrar "+fmt(t.total);
+  $("#vFacW").hidden=pres;
+}
+async function guardarVenta(){
+  if(!CART.items.length) throw new Error("Agregá al menos un producto o servicio.");
+  const t=cartTotals(); if(t.total<=0 && CART.tipo!=="presupuesto") throw new Error("El total tiene que ser mayor a cero.");
+  const pres=CART.tipo==="presupuesto", medio=$("#vMedio").value, fiado=!pres&&medio==="Fiado";
+  let cliente=$("#vCli").value.trim(); const wa=$("#vWa").value.replace(/\D/g,""), doc=$("#vDoc").value.trim(), emp=$("#vEmp")?.value||"";
+  if(fiado && !cliente) throw new Error("Para fiar, poné el nombre del cliente.");
+  if(!cliente) cliente="Consumidor final";
+  const num=nextNum(), N=pad5(num), hoy=iso(today());
+  const parts=CART.items.map(i=>`${fmtQ(i.q)} x ${i.n.replace(/ · /g," - ")} @${i.p}`); if(t.desc) parts.push("Descuento -"+t.desc);
+  const rec={numero:num, fecha:hoy, cliente, doc, concepto:parts.join(" · ").slice(0,1500), medio:pres?"":medio, monto:t.total,
+    estado:pres?"Presupuesto":($("#vFac").checked?"Facturar":"Emitido"), obs:[emp?"Atendió: "+emp:"", CART.from||""].filter(Boolean).join(" · "), wa};
+  const ops=[{sheet:"RECIBOS",row:{fecha:rec.fecha,cliente,doc,concepto:rec.concepto,medio:rec.medio,monto:rec.monto,estado:rec.estado,obs:rec.obs}}];
+  const local=[];
+  if(!pres){
+    if(fiado){
+      if(!S.fiadoClientes.some(c=>c.cliente===cliente)){ const nc={cliente,whatsapp:wa,limite:""}; ops.push({sheet:"FIADO",row:nc}); local.push(()=>S.fiadoClientes.push(nc)); }
+      const fm={fecha:hoy,cliente,tipo:"Fiado",detalle:"Venta N° "+N,monto:t.total}; ops.push({sheet:"FIADO_MOV",row:fm}); local.push(()=>S.fiadoMov.push(fm));
+    } else {
+      const soloServ=CART.items.every(i=>!i.stock && (C().servicios||[]).some(s=>s.nombre===i.n));
+      const cj={fecha:hoy,tipo:"Ingreso",categoria:soloServ&&C().categorias.includes("Servicios")?"Servicios":"Ventas",detalle:`Venta N° ${N}${cliente!=="Consumidor final"?" · "+cliente:""}`,medio,monto:t.total};
+      ops.push({sheet:"CAJA",row:cj}); local.push(()=>S.caja.push(cj));
+    }
+    CART.items.filter(i=>i.stock).forEach(i=>{ const sm={fecha:hoy,producto:i.n,tipo:"Salida",cantidad:i.q,nota:"Venta N° "+N}; ops.push({sheet:"STOCK_MOV",row:sm}); local.push(()=>S.stockMov.push(sm)); });
+  }
+  await api.addMany(ops);
+  S.recibos.push(rec); local.forEach(f=>f());
+  return rec;
+}
+
+/* ---------- vista comprobantes ---------- */
+let compFiltro="todos";
+function vComprobantes(){
+  const all=[...S.recibos].sort((a,b)=>(Number(b.numero)||0)-(Number(a.numero)||0));
+  const fac=all.filter(r=>r.estado==="Facturar"), pres=all.filter(r=>r.estado==="Presupuesto");
+  const rows=compFiltro==="facturar"?fac:compFiltro==="presupuestos"?pres:all;
+  const cls={Emitido:"ok",Facturar:"warn",Facturado:"ok",Presupuesto:"neu",Anulado:"bad"};
+  const hoy=all.filter(r=>r.fecha===iso(today())&&r.estado!=="Presupuesto"&&r.estado!=="Anulado");
+  return `${cajaSeg()}
+  <div class="split"><div class="k"><span>Ventas con ticket hoy</span><b class="num">${hoy.length} · ${fmt(hoy.reduce((a,r)=>a+Number(r.monto||0),0))}</b></div>
+    <div class="k"><span>Para facturar</span><b class="num">${fac.length}</b></div></div>
+  <button class="btn btn-primary" type="button" data-add="venta">Nueva venta</button>
+  <div class="chips">${[["todos","Todos"],["facturar","Para facturar ("+fac.length+")"],["presupuestos","Presupuestos ("+pres.length+")"]].map(([k,l])=>`<button type="button" data-compf="${k}" aria-pressed="${compFiltro===k}">${l}</button>`).join("")}</div>
+  <div class="list">${rows.length?rows.slice(0,80).map(r=>`<button class="it rowbtn" type="button" data-comp="${esc(r.numero)}">
+    <div class="ico n num" style="font-size:11px">${pad5(r.numero).slice(-3)}</div>
+    <div class="m"><b>${esc(r.cliente)}</b><span>${dmy(r.fecha)} · N° ${pad5(r.numero)} · ${esc(r.medio||"—")}</span><br><span class="chip ${cls[r.estado]||"neu"}">${esc(r.estado==="Facturar"?"Para facturar":r.estado||"Emitido")}</span></div>
+    <div class="v num">${fmt(r.monto)}</div></button>`).join(""):`<div class="empty">Todavía no hay comprobantes. Cada venta que cargues con "Nueva venta" genera su ticket numerado.</div>`}</div>
+  <p class="mini">Los tickets y presupuestos no son factura. Si el cliente pide factura, marcala al vender y después la hacés en ARCA (Comprobantes en línea) con los datos que copia la app.</p>`;
+}
+function openComprobante(numero){
+  const r=S.recibos.find(x=>String(x.numero)===String(numero)); if(!r) return;
+  const facTxt=`Datos para facturar · ${S.config.negocio}\nComprobante interno N° ${pad5(r.numero)} del ${dmy(r.fecha)}\nCliente: ${r.cliente}${r.doc?"\nDNI/CUIT: "+r.doc:""}\nConcepto: ${parseItems(r.concepto).map(i=>i.p==null?i.n:(i.desc?"Descuento":fmtQ(i.q)+" x "+i.n)).join(", ")}\nImporte total: ${Math.round(r.monto)}`;
+  $("#modal").innerHTML=`<div class="scrim" id="scrim"><div class="sheet"><h3>${r.estado==="Presupuesto"?"Presupuesto":"Venta"} N° ${pad5(r.numero)}</h3>
+    ${ticketHTML(comprobanteData(r))}
+    ${r.obs?`<p class="mini">${esc(r.obs)}</p>`:""}
+    <div class="btn-row"><button class="btn btn-ghost" type="button" id="cSee">Compartir / imprimir</button>
+      ${r.estado==="Presupuesto"?`<button class="btn btn-primary" type="button" id="cConv">Convertir en venta</button>`:`<button class="btn btn-ghost" type="button" id="cFacCopy">Copiar datos para facturar</button>`}</div>
+    ${r.estado==="Facturar"?`<div class="card" style="display:grid;gap:8px"><b>Marcar como facturada</b><span class="mini">Hacé la factura en ARCA (Comprobantes en línea) y anotá el número acá.</span>
+      <a class="btn btn-ghost" href="https://auth.afip.gob.ar/contribuyente_/login.xhtml" target="_blank" rel="noopener">Abrir ARCA</a>
+      <input class="in" id="cFacN" placeholder="Ej: Factura C 00001-00000123"><button class="btn btn-primary" type="button" id="cFacOk">Guardar como facturada</button></div>`:""}
+    ${r.estado==="Emitido"?`<button class="btn btn-ghost" type="button" id="cPide">El cliente pidió factura</button>`:""}
+    ${["Emitido","Facturar"].includes(r.estado)?`<button class="btn btn-ghost" type="button" id="cAnular" style="color:var(--bad)">Anular venta</button>`:""}
+    <p class="err" id="formErr"></p>
+    <button class="btn btn-primary" type="button" id="cancel">Listo</button></div></div>`;
+  const close=()=>{$("#modal").innerHTML="";};
+  $("#cancel").onclick=close; $("#scrim").addEventListener("click",e=>{ if(e.target.id==="scrim") close(); });
+  $("#cSee").onclick=()=>openTicketView(comprobanteData(r));
+  const setEst=async(estado,obs)=>{ const ch={estado}; if(obs!==undefined) ch.obs=obs; await api.update("RECIBOS",{numero:r.numero},ch); Object.assign(r,ch); };
+  if($("#cConv")) $("#cConv").onclick=()=>{ const its=parseItems(r.concepto); const desc=its.filter(i=>i.desc).reduce((a,i)=>a+Math.abs(i.p),0);
+    openVenta({items:its.filter(i=>!i.desc&&i.p!=null).map(i=>({n:i.n,p:i.p,q:i.q,stock:S.stock.some(s=>s.producto===i.n)})), cliente:r.cliente==="Consumidor final"?"":r.cliente, desc:desc||"", from:"Presupuesto N° "+pad5(r.numero)}); };
+  if($("#cFacCopy")) $("#cFacCopy").onclick=()=>(navigator.clipboard?.writeText(facTxt)||Promise.reject()).then(()=>toast("Datos copiados")).catch(()=>toast("No se pudo copiar"));
+  if($("#cFacOk")) $("#cFacOk").onclick=async()=>{ const n=$("#cFacN").value.trim(); if(!n){ $("#formErr").textContent="Anotá el número de factura."; return; }
+    try{ await setEst("Facturado",[r.obs,n].filter(Boolean).join(" · ")); close(); render(); toast("Marcada como facturada"); }catch(e){ $("#formErr").textContent=e.message; } };
+  if($("#cPide")) $("#cPide").onclick=async()=>{ try{ await setEst("Facturar"); close(); render(); toast("Quedó en Para facturar"); }catch(e){ $("#formErr").textContent=e.message; } };
+  if($("#cAnular")) $("#cAnular").onclick=async()=>{
+    const b=$("#cAnular"); if(!b.dataset.ok){ b.dataset.ok=1; b.textContent="Tocá de nuevo para confirmar la anulación"; return; }
+    try{
+      const N=pad5(r.numero), hoy=iso(today()), ops=[], local=[];
+      if(r.medio==="Fiado"){ const fm={fecha:hoy,cliente:r.cliente,tipo:"Pago",detalle:"Anulación venta N° "+N,monto:Number(r.monto)}; ops.push({sheet:"FIADO_MOV",row:fm}); local.push(()=>S.fiadoMov.push(fm)); }
+      else { const cj={fecha:hoy,tipo:"Ingreso",categoria:"Ventas",detalle:"Anulación venta N° "+N,medio:r.medio||"Efectivo",monto:-Number(r.monto)}; ops.push({sheet:"CAJA",row:cj}); local.push(()=>S.caja.push(cj)); }
+      parseItems(r.concepto).filter(i=>i.p!=null&&!i.desc&&S.stock.some(s=>s.producto===i.n)).forEach(i=>{ const sm={fecha:hoy,producto:i.n,tipo:"Entrada",cantidad:i.q,nota:"Anulación venta N° "+N}; ops.push({sheet:"STOCK_MOV",row:sm}); local.push(()=>S.stockMov.push(sm)); });
+      await api.addMany(ops); local.forEach(f=>f()); await setEst("Anulado"); close(); render(); toast("Venta anulada: se devolvió el stock y se descontó de la caja");
+    }catch(e){ $("#formErr").textContent=e.message; }
+  };
+}
+
+/* ---------- stock rápido ---------- */
+let stockCat="Todas";
+function openProducto(nombre){
+  const p=stockEstado().find(x=>x.producto===nombre); if(!p) return;
+  const cats=[...new Set([...(S.stock.map(x=>x.categoria).filter(Boolean)),"Otros"])];
+  $("#modal").innerHTML=`<div class="scrim" id="scrim"><div class="sheet"><h3>${esc(p.producto)}</h3>
+    <div class="split"><div class="k"><span>Stock actual</span><b class="num" style="font-size:24px">${fmtQ(p.actual)}</b></div><div class="k"><span>Precio · margen</span><b class="num">${fmt(p.precio)} · ${pct(p.margen)}</b></div></div>
+    <label class="f" for="pQ">Cantidad<div class="step big"><button type="button" data-pq="-1" aria-label="Menos">−</button><input class="in num" id="pQ" value="1" inputmode="decimal"><button type="button" data-pq="1" aria-label="Más">+</button></div></label>
+    <div class="grid3"><button class="btn btn-ghost" type="button" data-pm="Entrada">+ Entró</button><button class="btn btn-ghost" type="button" data-pm="Salida">− Salió</button><button class="btn btn-ghost" type="button" data-pm="Conteo">= Conté</button></div>
+    <p class="mini">"Conté" deja el stock en la cantidad que pusiste (ajusta la diferencia).</p>
+    <details class="libre"><summary>Editar precio, costo, mínimo o código</summary>
+      <div class="grid2"><label class="f">Costo<input class="in num" id="pCos" value="${esc(p.costo)}" inputmode="decimal"></label><label class="f">Precio de venta<input class="in num" id="pPre" value="${esc(p.precio)}" inputmode="decimal"></label>
+      <label class="f">Mínimo para pedir<input class="in num" id="pMin" value="${esc(p.minimo)}" inputmode="numeric"></label><label class="f">Código de barras<input class="in num" id="pCod" value="${esc(p.codigo||"")}" inputmode="numeric"></label></div>
+      <label class="f">Categoría<input class="in" id="pCat" list="pCatL" value="${esc(p.categoria||"")}"><datalist id="pCatL">${cats.map(c=>`<option value="${esc(c)}">`).join("")}</datalist></label>
+      <button class="btn btn-ghost" type="button" id="pSave">Guardar cambios</button></details>
+    <p class="err" id="formErr"></p>
+    <button class="btn btn-primary" type="button" id="cancel">Cerrar</button></div></div>`;
+  const close=()=>{$("#modal").innerHTML="";};
+  $("#cancel").onclick=close; $("#scrim").addEventListener("click",e=>{ if(e.target.id==="scrim") close(); });
+  $("#scrim").addEventListener("click",async e=>{
+    const b=e.target.closest("[data-pq]"); if(b){ const i=$("#pQ"); i.value=Math.max(0,numF(i.value)+Number(b.dataset.pq)); return; }
+    const m=e.target.closest("[data-pm]"); if(!m) return;
+    const q=numF($("#pQ").value); let tipo=m.dataset.pm, cant=q;
+    if(tipo==="Conteo"){ cant=Math.round((q-p.actual)*100)/100; tipo="Ajuste"; if(!cant){ toast("El stock ya está en "+fmtQ(q)); return; } }
+    else if(!q||q<0){ $("#formErr").textContent="Poné una cantidad."; return; }
+    const row={fecha:iso(today()),producto:p.producto,tipo,cantidad:cant,nota:tipo==="Ajuste"?"Conteo":""};
+    try{ await api.add("STOCK_MOV",row); S.stockMov.push(row); close(); render(); toast("Stock de "+p.producto+" actualizado"); }catch(err){ $("#formErr").textContent=err.message; }
+  });
+  $("#pSave").onclick=async()=>{
+    const ch={costo:numF($("#pCos").value),precio:numF($("#pPre").value),minimo:numF($("#pMin").value),codigo:$("#pCod").value.trim(),categoria:$("#pCat").value.trim()||"Otros"};
+    if(!ch.precio){ $("#formErr").textContent="Poné un precio de venta."; return; }
+    try{ await api.update("STOCK",{producto:p.producto},ch); Object.assign(S.stock.find(x=>x.producto===p.producto),ch); close(); render(); toast("Producto actualizado"); }catch(err){ $("#formErr").textContent=err.message; }
+  };
+}
+function openPedido(){
+  const st=stockEstado().sort((a,b)=>({"SIN STOCK":0,"REPONER":1,"OK":2}[a.estado]-({"SIN STOCK":0,"REPONER":1,"OK":2}[b.estado]))||a.producto.localeCompare(b.producto));
+  sheet("Llegó un pedido", `<p class="mini" style="margin:0">Poné solo las cantidades que llegaron. Primero aparecen los que había que reponer.</p>
+    <input class="in" id="pdQ" placeholder="Buscar producto">
+    <div class="list pedido">${st.map((p,i)=>`<div class="it" data-pn="${esc(p.producto.toLowerCase())}"><div class="m"><b>${esc(p.producto)}</b><span>Hay ${fmtQ(p.actual)} · mín. ${p.minimo} · costo ${fmt(p.costo)}</span></div><input class="in num q" name="q${i}" inputmode="decimal" placeholder="0" data-cost="${Number(p.costo)||0}" aria-label="Cantidad de ${esc(p.producto)}"></div>`).join("")}</div>
+    <label class="f" for="pdNota">Nota<input class="in" id="pdNota" name="nota" placeholder="Pedido distribuidora"></label>
+    <label class="chk"><input type="checkbox" name="caja" id="pdCaja" checked> Anotar el pago en Caja (<span id="pdTot" class="num">$ 0</span> a costo)</label>
+    <label class="f" for="pdMedio">Pagado con<select class="in" id="pdMedio" name="medio">${opts(C().medios,"Transferencia")}</select></label>`,
+    async d=>{ const hoy=iso(today()), ops=[], local=[]; let tot=0;
+      st.forEach((p,i)=>{ const q=numF(d["q"+i]); if(q>0){ const sm={fecha:hoy,producto:p.producto,tipo:"Entrada",cantidad:q,nota:d.nota||"Pedido"}; ops.push({sheet:"STOCK_MOV",row:sm}); local.push(()=>S.stockMov.push(sm)); tot+=q*(Number(p.costo)||0); } });
+      if(!ops.length) throw new Error("Poné al menos una cantidad.");
+      if(d.caja && tot>0){ const cj={fecha:hoy,tipo:"Egreso",categoria:C().categorias.includes("Mercadería / proveedores")?"Mercadería / proveedores":(egresoCats()[0]||"Otros gastos"),detalle:d.nota||"Pedido de mercadería",medio:d.medio,monto:Math.round(tot)}; ops.push({sheet:"CAJA",row:cj}); local.push(()=>S.caja.push(cj)); }
+      await api.addMany(ops); local.forEach(f=>f()); return `Stock cargado (${ops.filter(o=>o.sheet==="STOCK_MOV").length} productos)`; });
+  const upd=()=>{ $("#pdTot").textContent=fmt($$(".pedido .q").reduce((a,i)=>a+numF(i.value)*Number(i.dataset.cost),0)); };
+  $(".pedido").addEventListener("input",upd);
+  $("#pdQ").addEventListener("input",e=>{ const t=e.target.value.trim().toLowerCase(); $$(".pedido [data-pn]").forEach(r=>r.hidden=!!t&&!r.dataset.pn.includes(t)); });
+}
+function openPrecios(){
+  const cats=["Todas",...new Set(S.stock.map(x=>x.categoria).filter(Boolean))];
+  sheet("Actualizar precios", `<p class="mini" style="margin:0">Sube (o baja, con signo menos) el precio de venta de varios productos de una vez.</p>
+    <div class="grid2"><label class="f" for="prCat">Categoría<select class="in" id="prCat" name="cat">${opts(cats)}</select></label>
+    <label class="f" for="prPct">Porcentaje<input class="in num" id="prPct" name="pct" inputmode="decimal" placeholder="Ej: 8" required></label></div>
+    <div class="grid2"><label class="f" for="prRed">Redondear a<select class="in" id="prRed" name="red"><option value="1">Sin redondeo</option><option value="10">$ 10</option><option value="50" selected>$ 50</option><option value="100">$ 100</option></select></label>
+    <label class="chk" style="align-self:end"><input type="checkbox" name="costo"> También el costo</label></div>`,
+    async d=>{ const p=numF(d.pct); if(!p) throw new Error("Poné un porcentaje."); const r=Number(d.red)||1;
+      const prods=S.stock.filter(x=>d.cat==="Todas"||x.categoria===d.cat); if(!prods.length) throw new Error("No hay productos en esa categoría.");
+      const items=prods.map(x=>{ const ch={precio:Math.max(r,Math.round(Number(x.precio)*(1+p/100)/r)*r)}; if(d.costo) ch.costo=Math.round(Number(x.costo)*(1+p/100)); return {sheet:"STOCK",key:{producto:x.producto},changes:ch,ref:x}; });
+      await api.updateMany(items.map(({sheet,key,changes})=>({sheet,key,changes}))); items.forEach(i=>Object.assign(i.ref,i.changes));
+      return `Precios actualizados (${items.length} productos)`; });
+}
+let _scan=null;
+function stopScan(){ if(_scan){ _scan.stop=true; try{ _scan.stream.getTracks().forEach(t=>t.stop()); }catch(e){} _scan=null; } const o=$("#scanOv"); if(o) o.remove(); }
+async function openScanner(cb, keep){
+  if(!SCAN_OK){ toast("Tu celular no permite escanear desde acá: escribí el código"); return; }
+  const ov=document.createElement("div"); ov.id="scanOv"; ov.className="scanov";
+  ov.innerHTML=`<video playsinline muted></video><div class="frame"></div><p>Apuntá al código de barras</p><button class="btn btn-ghost" type="button">Cerrar</button>`;
+  document.body.appendChild(ov); ov.querySelector("button").onclick=stopScan;
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}});
+    const v=ov.querySelector("video"); v.srcObject=stream; await v.play();
+    const det=new BarcodeDetector({formats:["ean_13","ean_8","upc_a","upc_e","code_128","code_39"]});
+    _scan={stream,stop:false}; let last="";
+    const loop=async()=>{ if(!_scan||_scan.stop) return; try{ const r=await det.detect(v); if(r.length && r[0].rawValue!==last){ last=r[0].rawValue; if(navigator.vibrate) navigator.vibrate(60); if(!keep) stopScan(); cb(last); setTimeout(()=>{last="";},1500); } }catch(e){} requestAnimationFrame(loop); };
+    loop();
+  }catch(e){ stopScan(); toast("No se pudo abrir la cámara"); }
+}
+function scanStock(){
+  openScanner(code=>{ const p=S.stock.find(x=>String(x.codigo||"")===code); if(p) openProducto(p.producto); else { openAdd("producto"); setTimeout(()=>{ const i=$("#f_cod"); if(i) i.value=code; },80); toast("Código nuevo: cargá el producto"); } });
+}
+
+/* ---------- turnos con profesionales ---------- */
+let turnoProf="Todos";
+function ocupado(prof, fecha, hora, dur, skip){
+  const a=toMin(hora), b=a+(Number(dur)||30);
+  return S.turnos.some(t=>t!==skip && t.fecha===fecha && (t.profesional||"")===(prof||"") && !["Cancelado","Ausente"].includes(t.estado) && toMin(t.hora)<b && a<toMin(t.hora)+(Number(t.duracion)||30));
+}
+function asignar(pref, fecha, hora, dur){
+  const emps=EMPS(); if(!emps.length) return {prof:""};
+  const cand=pref&&pref!=="Cualquiera"?[pref]:emps;
+  const libre=cand.find(e=>!ocupado(e,fecha,hora,dur)); if(libre) return {prof:libre};
+  for(let m=toMin(hora)+15; m<=22*60; m+=15){ const e=cand.find(x=>!ocupado(x,fecha,fromMin(m),dur)); if(e) return {prof:null, sug:`${fromMin(m)} con ${e}`}; }
+  return {prof:null, sug:null};
+}
+
+const FAB_DEFAULT = {inicio:"venta", caja:"venta", fiado:"fiado", stock:"pedido", turnos:"turno"};
 
 /* ---------------- eventos ---------------- */
 document.addEventListener("click", e=>{
-  const t=e.target.closest("[data-tab]"); if(t){ go(t.dataset.tab); return; }
+  const t=e.target.closest("[data-tab]"); if(t){ if(t.dataset.tab==="comp"){ cajaFiltro="comp"; compFiltro="facturar"; go("caja"); } else go(t.dataset.tab); return; }
+  const pr=e.target.closest("[data-prod]"); if(pr){ openProducto(pr.dataset.prod); return; }
+  const cp=e.target.closest("[data-comp]"); if(cp){ openComprobante(cp.dataset.comp); return; }
+  const cpf=e.target.closest("[data-compf]"); if(cpf){ compFiltro=cpf.dataset.compf; render(); return; }
+  const sc=e.target.closest("[data-sc]"); if(sc){ stockCat=sc.dataset.sc; render(); return; }
+  const tp=e.target.closest("[data-tp]"); if(tp){ turnoProf=tp.dataset.tp; render(); return; }
+  if (e.target.closest("#stScan")){ scanStock(); return; }
   const a=e.target.closest("[data-add]"); if(a){ openAdd(a.dataset.add); return; }
   const cf=e.target.closest("[data-cf]"); if(cf){ cajaFiltro=cf.dataset.cf; render(); return; }
   const tu=e.target.closest("[data-turno]"); if(tu){ openTurnoEstado(tu.dataset.turno); return; }
@@ -725,6 +1087,12 @@ document.addEventListener("click", e=>{
   }
 });
 $("#fab").addEventListener("click", ()=>openAdd(FAB_DEFAULT[tab]||"ingreso"));
+document.addEventListener("input", e=>{
+  if (e.target.id==="stQ"){ const q=e.target.value.trim().toLowerCase(); $$("#stList [data-q]").forEach(r=>r.hidden=!!q&&!r.dataset.q.includes(q)); }
+});
+document.addEventListener("keydown", e=>{
+  if (e.target.id==="stQ" && e.key==="Enter"){ const code=e.target.value.trim(); const p=S.stock.find(x=>String(x.codigo||"")===code)||S.stock.find(x=>x.producto.toLowerCase().includes(code.toLowerCase())); if(p){ e.preventDefault(); openProducto(p.producto); } }
+});
 window.addEventListener("beforeinstallprompt", e=>{ e.preventDefault(); window._bip=e; });
 $("#logout").addEventListener("click", ()=>{ store.del("ko_token"); TOKEN=null; S=null; showLogin(); });
 
@@ -750,7 +1118,7 @@ function showApp(){
 }
 
 (async ()=>{
-  if (DEMO){ if (location.hash==="#ingreso") { showLogin(); return; } S=demoData(); showApp(); return; }   // la demo abre directo en el tablero
+  if (DEMO){ if (location.hash==="#ingreso") { showLogin(); return; } S=norm(demoData()); showApp(); return; }   // la demo abre directo en el tablero
   const d=await api.resume(); if(d){ S=d; showApp(); } else showLogin();
 })();
 if (!DEMO && "serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});
